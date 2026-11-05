@@ -1,0 +1,31 @@
+{
+  "name": "dm-testlab",
+  "version": "1.0.0",
+  "description": "DM TestLab – offline precvičovanie Diskrétnej matematiky (FEI TUKE)",
+  "main": "main.js",
+  "author": "Dávid Babjarčík",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^30.5.1",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "sk.tuke.dmtestlab",
+    "productName": "DM TestLab",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "public/**/*"
+    ],
+    "win": {
+      "target": "nsis"
+    }
+  }
+}

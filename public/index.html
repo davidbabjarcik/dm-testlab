@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DM TestLab</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark">
+
+<div class="app">
+
+<!-- HOME -->
+<section data-screen="home">
+  <header>
+    <div>
+      <h1>DM TestLab</h1>
+      <div class="muted">Diskrétna matematika · FEI TUKE · príprava na zápočet</div>
+    </div>
+    <button class="icon-btn" onclick="toggleTheme()" title="Svetlý / tmavý režim">🌙</button>
+  </header>
+
+  <div class="card">
+    <h3>📝 Zápočtový test</h3>
+    <p class="muted">Ako naozaj: 3 úlohy po 5 bodov, 50 minút. Po odovzdaní uvidíš body, chyby a celý postup riešenia.</p>
+    <div class="exam-grid" id="examButtons"></div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 Precvičovanie príkladov</h3>
+    <p class="muted">Nekonečne veľa náhodných príkladov z každej témy, s okamžitou kontrolou a riešením krok po kroku.</p>
+    <div class="action-row">
+      <button class="btn-primary" onclick="renderPracticeList(); showScreen('practiceList')">Vybrať typ príkladu</button>
+      <button class="btn-secondary" onclick="openTheory('semantika')">📘 Teória a vysvetlenie</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧠 ABC kvíz z teórie</h3>
+    <p class="muted"><span id="qCount"></span> otázok z definícií a viet. 20 otázok, 20 minút, vysvetlenie po každej odpovedi.</p>
+    <div class="action-row">
+      <button class="btn-primary" onclick="startQuiz('all')">Náhodný kvíz</button>
+      <button class="btn-secondary" onclick="startQuiz('logic')">Logika</button>
+      <button class="btn-secondary" onclick="startQuiz('rel')">Relácie a zväzy</button>
+      <button class="btn-secondary" onclick="startQuiz('graph')">Grafy</button>
+    </div>
+    <div class="action-row" style="margin-top:12px">
+      <button class="btn-outline" onclick="startQuiz('wrong')">❌ Test zo zlých</button>
+      <button class="btn-outline" onclick="startQuiz('fav')">⭐ Test z obľúbených</button>
+      <button class="btn-outline" onclick="showQList('wrong')">Zlé otázky</button>
+      <button class="btn-outline" onclick="showQList('fav')">Obľúbené otázky</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📊 História testov</h3>
+    <ul id="historyList" class="history-list"></ul>
+    <button class="btn-small danger" onclick="clearHistory()">Zmazať históriu</button>
+  </div>
+</section>
+
+<!-- ZOZNAM TYPOV PRÍKLADOV -->
+<section data-screen="practiceList" style="display:none">
+  <header>
+    <h2>Precvičovanie</h2>
+    <button class="nav-btn" onclick="showScreen('home')">Domov</button>
+  </header>
+  <div id="practiceList"></div>
+</section>
+
+<!-- PRÍKLAD -->
+<section data-screen="practice" style="display:none">
+  <header>
+    <h2 id="practiceTitle"></h2>
+    <div class="nav-row">
+      <button class="nav-btn" onclick="renderPracticeList(); showScreen('practiceList')">Typy príkladov</button>
+      <button class="nav-btn" onclick="showScreen('home')">Domov</button>
+    </div>
+  </header>
+  <div id="practiceBox"></div>
+  <div class="controls sticky">
+    <button class="btn-primary" id="btnCheck" onclick="checkPractice()">Skontrolovať</button>
+    <button class="btn-outline" onclick="showPracticeSolution()">Ukáž riešenie</button>
+    <button class="btn-secondary" onclick="newPractice()">Nový príklad ↻</button>
+  </div>
+  <div id="practiceSol"></div>
+</section>
+
+<!-- ZÁPOČTOVÝ TEST -->
+<section data-screen="exam" style="display:none">
+  <header>
+    <h2 id="examTitle"></h2>
+    <div class="nav-row">
+      <span id="examTimer" class="timer"></span>
+      <button class="nav-btn" onclick="leaveExam()">Domov</button>
+    </div>
+  </header>
+  <div id="examSummary"></div>
+  <div id="examBox"></div>
+  <div class="controls">
+    <button class="btn-primary" id="btnSubmit" onclick="confirmSubmitExam()">Odovzdať test</button>
+  </div>
+</section>
+
+<!-- ABC KVÍZ -->
+<section data-screen="quiz" style="display:none">
+  <header class="test-header">
+    <span id="quizTimer" class="timer"></span>
+  </header>
+  <div class="card">
+    <div id="quizQuestion" class="question"></div>
+    <div id="quizAnswers" class="answers"></div>
+    <div id="quizExplain"></div>
+    <div id="quizProgress" class="progress"></div>
+    <div class="controls">
+      <button class="btn-primary" onclick="nextQuiz()">Ďalej</button>
+      <button class="btn-small danger" onclick="confirmEndQuiz()">Ukončiť</button>
+    </div>
+  </div>
+</section>
+
+<!-- PREHĽAD TESTU -->
+<section data-screen="review" style="display:none">
+  <header>
+    <h2 id="reviewTitle">Detail testu</h2>
+    <button class="nav-btn" onclick="showScreen('home')">Domov</button>
+  </header>
+  <div id="reviewContent"></div>
+</section>
+
+<!-- ZLÉ / OBĽÚBENÉ -->
+<section data-screen="qlist" style="display:none">
+  <header>
+    <h2 id="qlistTitle"></h2>
+    <button class="nav-btn" onclick="showScreen('home')">Domov</button>
+  </header>
+  <div id="qlistContent"></div>
+</section>
+
+<!-- TEÓRIA -->
+<section data-screen="theory" style="display:none">
+  <header>
+    <h2>📘 Teória</h2>
+    <button class="nav-btn" onclick="showScreen('home')">Domov</button>
+  </header>
+  <div class="theory-layout">
+    <nav id="theoryNav" class="card"></nav>
+    <article id="theoryContent" class="card theory"></article>
+  </div>
+</section>
+
+</div>
+
+<script src="js/util.js"></script>
+<script src="js/logic.js"></script>
+<script src="js/structures.js"></script>
+<script src="js/tasks.js"></script>
+<script src="js/questions.js"></script>
+<script src="js/theory.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
