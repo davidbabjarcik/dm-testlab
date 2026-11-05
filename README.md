@@ -38,9 +38,11 @@ Formuly sa píšu tlačidlami (¬ ∧ ∨ ⇒ ⇔) alebo z klávesnice: `! & | -
 
 ## 🚀 Spustenie
 
-Bez inštalácie – stačí otvoriť `public/index.html` v prehliadači (dáta sa ukladajú do prehliadača).
+- 🌐 **Online:** https://davidbabjarcik.github.io/dm-testlab/
+- 💾 **Windows inštalátor (.exe):** [Releases](https://github.com/davidbabjarcik/dm-testlab/releases/latest)
+- Bez inštalácie – stačí otvoriť `public/index.html` v prehliadači (dáta sa ukladajú do prehliadača).
 
-Ako desktopová aplikácia:
+Zo zdrojového kódu ako desktopová aplikácia:
 
 ```bash
 npm install
